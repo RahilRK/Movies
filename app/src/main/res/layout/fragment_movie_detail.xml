@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".ui.fragment.movieDetail.MovieDetailFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin456">
+
+            <ImageView
+                android:id="@+id/poster_path"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:scaleType="center" />
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_alignParentTop="true"
+                app:navigationIcon="@drawable/ic_left_arrow_white"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin8"
+                android:layout_alignParentBottom="true"
+                android:background="#70000000"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/original_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp28"
+                    android:textStyle="bold"
+                    android:singleLine="true"
+                    android:text="original_title"
+                    android:layout_alignParentStart="true"
+                    />
+
+                <RatingBar
+                    android:id="@+id/vote_average"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:theme="@style/RatingBar"
+                    android:numStars="5"
+                    android:rating="3"
+                    android:isIndicator="false"
+                    />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/margin16"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin4"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp16"
+                android:text="Overview: "
+                android:paddingStart="@dimen/margin8"
+                android:paddingEnd="@dimen/margin8"
+                android:paddingTop="@dimen/margin4"
+                android:paddingBottom="@dimen/margin4"
+                android:background="@drawable/rounded_curve_orangebg"
+                />
+
+            <TextView
+                android:id="@+id/overview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin4"
+                android:layout_marginStart="@dimen/margin4"
+                android:textColor="@color/textColorLow"
+                android:textSize="@dimen/sp16"
+                android:text="overview"
+                />
+
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin1"
+                android:layout_margin="@dimen/margin4"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/margin8"
+                android:layout_marginBottom="@dimen/margin8"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp16"
+                    android:text="Release year: "
+                    android:paddingStart="@dimen/margin8"
+                    android:paddingEnd="@dimen/margin8"
+                    android:paddingTop="@dimen/margin4"
+                    android:paddingBottom="@dimen/margin4"
+                    android:background="@drawable/rounded_curve_orangebg"
+                    />
+
+                <TextView
+                    android:id="@+id/release_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp18"
+                    android:text="release_date"
+                    android:textColor="@color/textColor"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin8"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/margin8"
+                android:layout_marginBottom="@dimen/margin8"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp16"
+                    android:text="Runtime: "
+                    android:paddingStart="@dimen/margin8"
+                    android:paddingEnd="@dimen/margin8"
+                    android:paddingTop="@dimen/margin4"
+                    android:paddingBottom="@dimen/margin4"
+                    android:background="@drawable/rounded_curve_orangebg"
+                    />
+
+                <TextView
+                    android:id="@+id/runtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp18"
+                    android:text="runtime"
+                    android:textColor="@color/textColor"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin8"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp16"
+                android:text="Production company: "
+                android:layout_marginTop="@dimen/margin8"
+                android:paddingStart="@dimen/margin8"
+                android:paddingEnd="@dimen/margin8"
+                android:paddingTop="@dimen/margin4"
+                android:paddingBottom="@dimen/margin4"
+                android:background="@drawable/rounded_curve_orangebg"
+                />
+
+            <TextView
+                android:id="@+id/production_companies"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp18"
+                android:text="production_companies"
+                android:textColor="@color/textColor"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/margin8"
+                android:layout_marginTop="@dimen/margin4"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

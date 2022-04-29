@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/search_nav_graph"
+    app:startDestination="@id/searchMovieFragment">
+    <fragment
+        android:id="@+id/searchMovieFragment"
+        android:name="com.rk.movies.ui.fragment.searchMovie.SearchMovieFragment"
+        android:label="@string/search_movie" />
+</navigation>

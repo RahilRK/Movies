@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Movies</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="search_movie">Search Movie</string>
+    <string name="movie_detail">Movie Detail</string>
+    <string name="release_year"><![CDATA[Release year: <b> %1$s </b> ]]></string>
+</resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nowPlayingFragment">
+
+    <fragment
+        android:id="@+id/nowPlayingFragment"
+        android:name="com.rk.movies.ui.fragment.nowPlaying.NowPlayingFragment"
+        android:label="@string/now_playing"
+        tools:layout="@layout/fragment_now_playing" >
+        <action
+            android:id="@+id/action_nowPlayingFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+        <action
+            android:id="@+id/action_nowPlayingFragment_to_movieDetailFragment2"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/topRatedFragment"
+        android:name="com.rk.movies.ui.fragment.topRated.TopRatedFragment"
+        android:label="@string/top_rated"
+        tools:layout="@layout/fragment_top_rated" >
+        <action
+            android:id="@+id/action_topRatedFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="com.rk.movies.ui.fragment.movieDetail.MovieDetailFragment"
+        android:label="@string/movie_detail"
+        tools:layout="@layout/fragment_movie_detail" >
+        <argument
+            android:name="movieId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/upcomingMovieFragment"
+        android:name="com.rk.movies.ui.fragment.upcomingMovie.UpcomingMovieFragment"
+        android:label="@string/upcoming"
+        tools:layout="@layout/fragment_upcoming_movie">
+        <action
+            android:id="@+id/action_upcomingMovieFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
+</navigation>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nowPlayingFragment"
+        android:title="@string/now_playing"
+        android:icon="@drawable/ic_play_button"
+        />
+
+    <item
+        android:id="@+id/topRatedFragment"
+        android:title="@string/top_rated"
+        android:icon="@drawable/ic_ranking"
+        />
+
+    <item
+        android:id="@+id/upcomingMovieFragment"
+        android:title="@string/upcoming"
+        android:icon="@drawable/ic_upcoming"
+        />
+</menu>
