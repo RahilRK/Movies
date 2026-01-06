@@ -1,8 +1,10 @@
 package com.rk.movies.util
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-class Application: Application() {
+@HiltAndroidApp
+class Application : Application() {
 
     lateinit var repository: Repository
     lateinit var globalClass: GlobalClass

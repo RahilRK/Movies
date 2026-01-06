@@ -7,7 +7,7 @@ import com.rk.movies.util.Repository
 
 class UpcomingMovieViewModelFactory(private val repository: Repository,
                                     private val globalClass: GlobalClass) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return UpcomingMovieViewModel(repository,globalClass) as T
     }
 }
