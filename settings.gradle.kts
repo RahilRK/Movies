@@ -1,3 +1,4 @@
+enableFeaturePreview("VERSION_CATALOGS")
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -13,4 +14,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Movies"
-include ':app'
+include(":app")
