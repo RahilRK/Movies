@@ -11,11 +11,15 @@ import com.rk.movies.model.nowPlaying.Result
 import com.rk.movies.util.Constant.response_error
 import com.rk.movies.util.GlobalClass
 import com.rk.movies.util.Repository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-class SearchMovieViewModel(private val repository: Repository,
-                           private val globalClass: GlobalClass
-): ViewModel() {
+@HiltViewModel
+class SearchMovieViewModel
+@Inject
+constructor(private val repository: Repository, private val globalClass: GlobalClass) :
+        ViewModel() {
 
     var tag = "SearchMovieViewModel"
 
@@ -23,7 +27,7 @@ class SearchMovieViewModel(private val repository: Repository,
 
     private val _searchRes: MutableLiveData<List<Result>> = MutableLiveData()
     val searchRes: LiveData<List<Result>>
-    get() = _searchRes
+        get() = _searchRes
 
     val errorRes = MutableLiveData<String>()
 
@@ -33,93 +37,85 @@ class SearchMovieViewModel(private val repository: Repository,
 
     fun doSearching() {
 
-        globalClass.log(tag,"doSearching")
+        globalClass.log(tag, "doSearching")
         _searchRes.postValue(emptyList)
         page = 1
 
         try {
 
             viewModelScope.launch {
-
                 val response = repository.doSearching(page, _searchKeyWord.value!!)
-                if(response.isSuccessful) {
+                if (response.isSuccessful) {
 
                     response.body()?.let { res ->
-
-                        globalClass.log(tag,"page: ${res.page}")
+                        globalClass.log(tag, "page: ${res.page}")
                         _searchRes.postValue(res.results)
                         page++
-
-                    }?:run {
-
-                        val error = response_error
-                        globalClass.log(tag,error)
-                        errorRes.postValue(error)
                     }
-                }
-                else {
+                            ?: run {
+                                val error = response_error
+                                globalClass.log(tag, error)
+                                errorRes.postValue(error)
+                            }
+                } else {
 
                     val gson = Gson()
-                    val apiErrorModel: ApiErrorMessage = gson.fromJson(
-                        response.errorBody()!!.charStream(),
-                        ApiErrorMessage::class.java
-                    )
+                    val apiErrorModel: ApiErrorMessage =
+                            gson.fromJson(
+                                    response.errorBody()!!.charStream(),
+                                    ApiErrorMessage::class.java
+                            )
 
                     val error = apiErrorModel.message
-                    globalClass.log(tag,error)
+                    globalClass.log(tag, error)
                     errorRes.postValue(error)
                 }
             }
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
 
             val error = Log.getStackTraceString(e)
-            globalClass.log(tag,error)
+            globalClass.log(tag, error)
             errorRes.postValue(error)
         }
     }
 
     fun loadMore() {
 
-        globalClass.log(tag,"loadMore")
+        globalClass.log(tag, "loadMore")
         try {
 
             viewModelScope.launch {
-
                 val response = repository.doSearching(page, _searchKeyWord.value!!)
-                if(response.isSuccessful) {
+                if (response.isSuccessful) {
 
                     response.body()?.let { res ->
-
-                        globalClass.log(tag,"page: ${res.page}")
+                        globalClass.log(tag, "page: ${res.page}")
                         addDataToList(res.results)
                         page++
-
-                    }?:run {
-
-                        val error = response_error
-                        globalClass.log(tag,error)
-                        errorRes.postValue(error)
                     }
-                }
-                else {
+                            ?: run {
+                                val error = response_error
+                                globalClass.log(tag, error)
+                                errorRes.postValue(error)
+                            }
+                } else {
 
                     val gson = Gson()
-                    val apiErrorModel: ApiErrorMessage = gson.fromJson(
-                        response.errorBody()!!.charStream(),
-                        ApiErrorMessage::class.java
-                    )
+                    val apiErrorModel: ApiErrorMessage =
+                            gson.fromJson(
+                                    response.errorBody()!!.charStream(),
+                                    ApiErrorMessage::class.java
+                            )
 
                     val error = apiErrorModel.message
-                    globalClass.log(tag,error)
+                    globalClass.log(tag, error)
                     errorRes.postValue(error)
                 }
             }
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
 
             val error = Log.getStackTraceString(e)
-            globalClass.log(tag,error)
+            globalClass.log(tag, error)
             errorRes.postValue(error)
         }
     }
@@ -128,7 +124,7 @@ class SearchMovieViewModel(private val repository: Repository,
 
         val list: MutableList<Result> = searchRes.value as MutableList<Result>
 
-        for(i in 0 until results.size) {
+        for (i in 0 until results.size) {
             val model = results.get(i)
             list.add(model)
         }

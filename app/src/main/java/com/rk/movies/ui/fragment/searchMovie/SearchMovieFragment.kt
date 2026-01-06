@@ -8,39 +8,35 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rk.movies.R
 import com.rk.movies.model.nowPlaying.Result
-import com.rk.movies.util.Application
 import com.rk.movies.util.GlobalClass
-import com.rk.movies.util.Repository
-import kotlinx.android.synthetic.main.fragment_now_playing.paginationProgressBar
-import kotlinx.android.synthetic.main.fragment_now_playing.recyclerView
-import kotlinx.android.synthetic.main.fragment_now_playing.toolbar
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.fragment_search_movie.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class SearchMovieFragment : Fragment(R.layout.fragment_search_movie) {
 
     var TAG = "SearchMovieFragment"
     private lateinit var activity: Context
 
-    lateinit var globalClass: GlobalClass
-    lateinit var repository: Repository
-    lateinit var viewModel: SearchMovieViewModel
+    @Inject lateinit var globalClass: GlobalClass
+    private val viewModel: SearchMovieViewModel by viewModels()
 
     var isLoading = false
     var doSearch = false
     var offset = 0
 
     private var arrayList = arrayListOf<Result>()
-    var adapter: SearchMovieAdapter? = null;
+    var adapter: SearchMovieAdapter? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -50,22 +46,14 @@ class SearchMovieFragment : Fragment(R.layout.fragment_search_movie) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init()
         setToolbar()
         onClick()
         setAdapter(arrayList)
         observeData()
     }
 
-    private fun init() {
-        globalClass = (requireActivity().application as Application).globalClass
-        repository = (requireActivity().application as Application).repository
-        viewModel = ViewModelProvider(this, SearchMovieViewModelFactory(repository, globalClass))
-            .get(SearchMovieViewModel::class.java)
-    }
-
     private fun setToolbar() {
-//        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+        //        (activity as AppCompatActivity).setSupportActionBar(toolbar)
         toolbar.title = resources.getString(R.string.search_movie)
     }
 
@@ -97,74 +85,73 @@ class SearchMovieFragment : Fragment(R.layout.fragment_search_movie) {
         }*/
 
         var job: Job? = null
-        edSearchMovie.addTextChangedListener(object : TextWatcher{
+        edSearchMovie.addTextChangedListener(
+                object : TextWatcher {
 
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-            override fun afterTextChanged(text: Editable?) {
+                    override fun afterTextChanged(text: Editable?) {
 
-                job?.cancel()
-                job = MainScope().launch {
-                    delay(1000L)
-                    text?.let {
+                        job?.cancel()
+                        job =
+                                MainScope().launch {
+                                    delay(1000L)
+                                    text?.let {
+                                        if (it.isNotBlank()) {
 
-                        if(it.isNotBlank()) {
-
-                            viewModel._searchKeyWord.value = it.toString()
-                            offset = 0
-                            doSearch = true
-                            viewModel.doSearching()
-                        }
-                        else {
-                            adapter?.clearAll()
-//                            showHideLayout()
-                        }
-
-                    }?:kotlin.run {
-
+                                            viewModel._searchKeyWord.value = it.toString()
+                                            offset = 0
+                                            doSearch = true
+                                            viewModel.doSearching()
+                                        } else {
+                                            adapter?.clearAll()
+                                            //                            showHideLayout()
+                                        }
+                                    }
+                                            ?: kotlin.run {}
+                                }
                     }
                 }
-            }
-        })
+        )
 
-        edSearchMovie.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                globalClass.hidekeyboard(edSearchMovie)
-                return@OnEditorActionListener true
-            }
-            false
-        })
+        edSearchMovie.setOnEditorActionListener(
+                OnEditorActionListener { v, actionId, event ->
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        globalClass.hidekeyboard(edSearchMovie)
+                        return@OnEditorActionListener true
+                    }
+                    false
+                }
+        )
         recyclerView.addOnScrollListener(scrollListener)
     }
 
-    private val scrollListener = object : RecyclerView.OnScrollListener() {
+    private val scrollListener =
+            object : RecyclerView.OnScrollListener() {
 
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
 
-            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-            val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-//            globalClass.log(TAG,"lastVisibleItem:${lastVisibleItem}")
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+                    //            globalClass.log(TAG,"lastVisibleItem:${lastVisibleItem}")
 
-            if (lastVisibleItem == offset - 1 && !isLoading) {
-                offset = lastVisibleItem + 1
-                showProgressBar()
-                viewModel.loadMore()
+                    if (lastVisibleItem == offset - 1 && !isLoading) {
+                        offset = lastVisibleItem + 1
+                        showProgressBar()
+                        viewModel.loadMore()
+                    }
+                }
             }
-        }
-    }
 
     private fun observeData() {
 
         viewModel.searchRes.observe(viewLifecycleOwner) { list ->
+            if (list.isNotEmpty()) {
 
-            if(list.isNotEmpty()) {
-
-                if(doSearch) {
+                if (doSearch) {
                     adapter?.clearAll()
                     doSearch = false
                 }
@@ -179,7 +166,7 @@ class SearchMovieFragment : Fragment(R.layout.fragment_search_movie) {
                 globalClass.log(TAG, "title: ${arrayList.get(0).title}")
             }
 
-//            showHideLayout()
+            //            showHideLayout()
         }
     }
 
@@ -192,15 +179,14 @@ class SearchMovieFragment : Fragment(R.layout.fragment_search_movie) {
 
     private fun showHideLayout() {
         adapter?.let {
-            if(it.list.isEmpty()) {
+            if (it.list.isEmpty()) {
                 recyclerViewLayout.visibility = View.GONE
                 noDataLayout.visibility = View.VISIBLE
-                globalClass.log(TAG,"isEmpty")
-            }
-            else {
+                globalClass.log(TAG, "isEmpty")
+            } else {
                 noDataLayout.visibility = View.GONE
                 recyclerViewLayout.visibility = View.VISIBLE
-                globalClass.log(TAG,"isNotEmpty")
+                globalClass.log(TAG, "isNotEmpty")
             }
         }
     }

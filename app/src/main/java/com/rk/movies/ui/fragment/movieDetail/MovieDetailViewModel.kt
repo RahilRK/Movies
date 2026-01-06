@@ -12,16 +12,20 @@ import com.rk.movies.util.Constant.response_error
 import com.rk.movies.util.GlobalClass
 import com.rk.movies.util.Repository
 import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MovieDetailViewModel(private val repository: Repository,
-                           private val globalClass: GlobalClass
-): ViewModel() {
+@HiltViewModel
+class MovieDetailViewModel
+@Inject
+constructor(private val repository: Repository, private val globalClass: GlobalClass) :
+        ViewModel() {
 
     var tag = "MovieDetailViewModel"
 
     private val _movieDetailRes: MutableLiveData<MovieDetailRes> = MutableLiveData()
     val movieDetailRes: LiveData<MovieDetailRes>
-    get() = _movieDetailRes
+        get() = _movieDetailRes
 
     val errorRes = MutableLiveData<String>()
 
@@ -30,40 +34,33 @@ class MovieDetailViewModel(private val repository: Repository,
         try {
 
             viewModelScope.launch {
-
                 val response = repository.getMovieDetail(movieId)
-                if(response.isSuccessful) {
+                if (response.isSuccessful) {
 
-                    response.body()?.let { res ->
-
-                        _movieDetailRes.postValue(res)
-
-
-                    }?:run {
-
-                        val error = response_error
-                        globalClass.log(tag,error)
-                        errorRes.postValue(error)
-                    }
-                }
-                else {
+                    response.body()?.let { res -> _movieDetailRes.postValue(res) }
+                            ?: run {
+                                val error = response_error
+                                globalClass.log(tag, error)
+                                errorRes.postValue(error)
+                            }
+                } else {
 
                     val gson = Gson()
-                    val apiErrorModel: ApiErrorMessage = gson.fromJson(
-                        response.errorBody()!!.charStream(),
-                        ApiErrorMessage::class.java
-                    )
+                    val apiErrorModel: ApiErrorMessage =
+                            gson.fromJson(
+                                    response.errorBody()!!.charStream(),
+                                    ApiErrorMessage::class.java
+                            )
 
                     val error = apiErrorModel.message
-                    globalClass.log(tag,error)
+                    globalClass.log(tag, error)
                     errorRes.postValue(error)
                 }
             }
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
 
             val error = Log.getStackTraceString(e)
-            globalClass.log(tag,error)
+            globalClass.log(tag, error)
             errorRes.postValue(error)
         }
     }

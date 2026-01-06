@@ -4,20 +4,4 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class Application : Application() {
-
-    lateinit var repository: Repository
-    lateinit var globalClass: GlobalClass
-
-    override fun onCreate() {
-        super.onCreate()
-
-        init()
-    }
-
-    fun init() {
-
-        globalClass = GlobalClass.getInstance(applicationContext)
-        repository = Repository(globalClass)
-    }
-}
+class Application : Application()

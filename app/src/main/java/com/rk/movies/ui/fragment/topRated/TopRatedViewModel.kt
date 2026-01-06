@@ -11,11 +11,15 @@ import com.rk.movies.model.nowPlaying.Result
 import com.rk.movies.util.Constant.response_error
 import com.rk.movies.util.GlobalClass
 import com.rk.movies.util.Repository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-class TopRatedViewModel(private val repository: Repository,
-                        private val globalClass: GlobalClass
-): ViewModel() {
+@HiltViewModel
+class TopRatedViewModel
+@Inject
+constructor(private val repository: Repository, private val globalClass: GlobalClass) :
+        ViewModel() {
 
     private var tag = "TopRatedViewModel"
 
@@ -35,46 +39,41 @@ class TopRatedViewModel(private val repository: Repository,
 
         try {
             viewModelScope.launch {
-
                 val response = repository.getTopRated(page)
-                if(response.isSuccessful) {
+                if (response.isSuccessful) {
 
                     response.body()?.let { res ->
-
-                        globalClass.log(tag,"page: ${res.page}")
-                        if(page == 1) {
+                        globalClass.log(tag, "page: ${res.page}")
+                        if (page == 1) {
                             _topRatedList.postValue(res.results)
-                        }
-                        else {
+                        } else {
                             addDataToList(res.results)
                         }
                         page++
-
-                    }?:run {
-
-                        val error = response_error
-                        globalClass.log(tag,error)
-                        errorRes.postValue(error)
                     }
-                }
-                else {
+                            ?: run {
+                                val error = response_error
+                                globalClass.log(tag, error)
+                                errorRes.postValue(error)
+                            }
+                } else {
 
                     val gson = Gson()
-                    val apiErrorModel: ApiErrorMessage = gson.fromJson(
-                        response.errorBody()!!.charStream(),
-                        ApiErrorMessage::class.java
-                    )
+                    val apiErrorModel: ApiErrorMessage =
+                            gson.fromJson(
+                                    response.errorBody()!!.charStream(),
+                                    ApiErrorMessage::class.java
+                            )
 
                     val error = apiErrorModel.message
-                    globalClass.log(tag,error)
+                    globalClass.log(tag, error)
                     errorRes.postValue(error)
                 }
             }
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
 
             val error = Log.getStackTraceString(e)
-            globalClass.log(tag,error)
+            globalClass.log(tag, error)
             errorRes.postValue(error)
         }
     }
@@ -83,7 +82,7 @@ class TopRatedViewModel(private val repository: Repository,
 
         val list: MutableList<Result> = topRatedList.value as MutableList<Result>
 
-        for(i in 0 until results.size) {
+        for (i in 0 until results.size) {
             val model = results.get(i)
             list.add(model)
         }

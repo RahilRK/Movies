@@ -9,16 +9,19 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.rk.movies.R
-import com.rk.movies.util.Application
 import com.rk.movies.util.GlobalClass
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private var tag = "MainActivity"
 
     lateinit var navController: NavController
 
+    @Inject
     lateinit var globalClass: GlobalClass
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,12 +31,7 @@ class MainActivity : AppCompatActivity() {
         navController = findNavController(R.id.fragment)
         bottomNavigationView.setupWithNavController(navController)
 
-        init()
         onClick()
-    }
-
-    fun init() {
-        globalClass = (application as Application).globalClass
     }
 
     fun onClick() {
@@ -70,7 +68,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun slideUpBottomNav() {
-        
+
         bottomNavigationView.clearAnimation();
         bottomNavigationView
             .animate()
