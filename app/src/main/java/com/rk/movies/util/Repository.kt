@@ -10,13 +10,15 @@ class Repository(private val globalClass: GlobalClass) {
         RetrofitClient.apiCall.getNowPlaying(
             APIKEY,
             language,
-            page)
+            page
+        )
 
     suspend fun getTopRated(page: Int) =
         RetrofitClient.apiCall.getTopRated(
             APIKEY,
             language,
-            page)
+            page
+        )
 
     suspend fun doSearching(page: Int, searchKeyWord: String) =
         RetrofitClient.apiCall2.doSearching(
@@ -24,17 +26,20 @@ class Repository(private val globalClass: GlobalClass) {
             language,
             page,
             false,
-            searchKeyWord)
+            searchKeyWord
+        )
 
     suspend fun getMovieDetail(movieId: Int) =
         RetrofitClient.apiCall.getMovieDetail(
             movieId,
             APIKEY,
-            language)
+            language
+        )
 
     suspend fun getUpcomingMovies(page: Int) =
         RetrofitClient.apiCall.getUpcomingMovies(
             APIKEY,
             language,
-            page)
+            page
+        )
 }
