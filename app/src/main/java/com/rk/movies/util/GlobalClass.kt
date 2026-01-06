@@ -19,7 +19,6 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import com.rk.movies.R
-import kotlinx.android.synthetic.main.fragment_search_movie.*
 
 class GlobalClass private constructor(mcontext: Context) {
 
