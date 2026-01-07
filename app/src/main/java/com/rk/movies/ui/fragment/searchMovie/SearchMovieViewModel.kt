@@ -7,10 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.rk.movies.model.ApiErrorMessage
+import com.rk.movies.model.nowPlaying.NowPlayingRes
 import com.rk.movies.model.nowPlaying.Result
+import com.rk.movies.repository.IRepository
 import com.rk.movies.util.Constant.response_error
 import com.rk.movies.util.GlobalClass
-import com.rk.movies.util.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class SearchMovieViewModel
 @Inject
-constructor(private val repository: Repository, private val globalClass: GlobalClass) :
+constructor(private val repository: IRepository, private val globalClass: GlobalClass) :
         ViewModel() {
 
     var tag = "SearchMovieViewModel"
